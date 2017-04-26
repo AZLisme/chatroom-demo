@@ -1,0 +1,287 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/static/style/material.min.css">
+    <script type="text/javascript" src="/static/js/material.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <title>{{ config.TITLE }}</title>
+    <style>
+        div#container {
+            max-width: 600px;
+            margin: auto;
+            height: 90%;
+        }
+
+        #chat-board {
+            min-height: 400px;
+        }
+
+        div#control-panel {
+            position: fixed;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            padding: 16px 32px;
+            height: 100px;
+            border-top: solid lightgray 1px;
+            background: white;
+        }
+
+        div#control-panel .send-box {
+            width: 80%;
+            float: left;
+        }
+
+        div#control-panel .send-box form {
+            width: 100%;
+        }
+
+        div#control-panel .send-box form div {
+            width: 100%;
+        }
+
+        div#control-panel .send-button {
+            width: 19%;
+            height: 100%;
+            text-align: center;
+            float: left;
+        }
+
+        div#control-panel .send-button button {
+            margin-top: 25px;
+        }
+
+        div#chat-board {
+            padding: 16px;
+            padding-bottom: 116px !important;
+        }
+
+        div#chat-board ul li {
+            min-height: 80px;
+            margin-top: 16px;
+        }
+
+        div#chat-board ul li div.message {
+            padding: 8px;
+            max-width: 400px;
+            min-width: 100px;
+            border-radius: 6px;
+        }
+
+        .clearfix:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden
+        }
+
+        div#chat-board ul li.from-other div.message {
+            float: left;
+            background: whitesmoke;
+        }
+
+        div#chat-board ul li.from-other div.message::after {
+            content: "";
+            position: relative;
+            left: -14px;
+            top: 4px;
+            float: left;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-right: 6px solid whitesmoke;
+            display: block;
+            width: 0;
+        }
+
+        div#chat-board ul li.from-self div.message {
+            float: right;
+            background: powderblue;
+        }
+
+        div#chat-board ul li.from-self div.message::after {
+            content: "";
+            position: relative;
+            left: 14px;
+            top: 4px;
+            float: right;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 6px solid powderblue;
+            display: block;
+            width: 0;
+        }
+
+        @media (max-width: 500px) {
+            div#control-panel {
+                padding: 16px 4px;
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            .mdl-layout__header-row {
+                padding-left: 16px;
+            }
+
+            div#control-panel {
+                height: 60px;
+            }
+
+            div#control-panel .send-button button {
+                margin-top: 15px;
+            }
+
+            div#chat-board {
+                padding: 16px;
+                padding-bottom: 76px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <span class="mdl-layout-title">{{ config.TITLE }}</span>
+            <!-- Add spacer, to align navigation to the right -->
+            <div class="mdl-layout-spacer"></div>
+            <!-- Navigation. We hide it in small screens. -->
+            <nav class="mdl-navigation">
+                <span id="username"></span>
+                <a class="mdl-navigation__link" href="/logout">注销</a>
+            </nav>
+        </div>
+    </header>
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div id="container">
+                <div id="chat-board">
+                    <ul class="mdl-list">
+                        <li class="from-other clearfix">
+                            <div class="message clearfix">
+                                <div class="username"><b>系统消息</b></div>
+                                <div class="content">{{ config.WELCOME }}</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="control-panel">
+                    <div class="send-box">
+                        <form action="#">
+                            <div class="mdl-textfield mdl-js-textfield">
+                                <textarea class="mdl-textfield__input" type="text" rows="3" id="sample5"></textarea>
+                                <label class="mdl-textfield__label" for="sample5">键入内容...</label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="send-button">
+                        <button id="send-button"
+                                class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                            发送
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<div id="toast-element" class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+</div>
+<script type="text/javascript" charset="utf-8">
+
+    function showToastBar(msg) {
+        var snackbarContainer = document.querySelector('#toast-element');
+        var data = {message: msg};
+        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+    }
+
+    function sendMessage() {
+        var form = $('textarea.mdl-textfield__input')[0];
+        msg = form.value.trim();
+        form.value = "";
+        if (msg == "") {
+            showToastBar("输入消息不能为空");
+            return;
+        }
+        socket.emit('chat', {username: uid, nick: nick, msg: msg, ts: +new Date(), room: 'default'});
+    }
+
+    function appendMessage(_uid, _nick, msg) {
+        var list = $('ul.mdl-list')[0];
+        var node = document.createElement('li');
+        node.innerHTML = `<div class="message"><div class="username"><b>${_nick}</b></div><div class="content">${msg}</div></div>`;
+        if (_uid == uid) {
+            node.className = 'from-self clearfix';
+        } else {
+            node.className = 'from-other clearfix';
+        }
+        list.appendChild(node);
+    }
+
+    function handleMessage(data) {
+        var uid = data['username'];
+        var msg = data['msg'];
+        var nick = data['nick'];
+        appendMessage(uid, nick, msg);
+    }
+
+    function escapeHtml(text) {
+        'use strict';
+        return text.replace(/[\"&'\/<>]/g, function (a) {
+            return {
+                '"': '&quot;', '&': '&amp;', "'": '&#39;',
+                '/': '&#47;', '<': '&lt;', '>': '&gt;'
+            }[a];
+        });
+    }
+    var uid = undefined;
+    var nick = undefined;
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+    socket.on('init', function (data) {
+        uid = data['uid'];
+        nick = data['nick'];
+        $("#username")[0].innerHTML = uid;
+    });
+
+    socket.on('chat', function (data) {
+
+        if (data instanceof Array) {
+            for (var i = 0; i < data.length; i++) {
+                handleMessage(data[i])
+            }
+        } else {
+            handleMessage(data)
+        }
+
+        var main = $('main').get(0);
+        $('main').animate(
+            {scrollTop: main.scrollHeight - main.clientHeight}
+        );
+    });
+
+
+    $("#send-button").on('click', sendMessage);
+
+
+    $("textarea.mdl-textfield__input").keyup(function (event) {
+        if (event.keyCode == 13) {
+            sendMessage();
+        }
+    });
+
+    socket.on('connect', function () {
+        socket.emit('join', {username: username, room: 'default'});
+    });
+
+
+</script>
+</body>
+
+</html>
