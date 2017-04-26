@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 HOST = 'localhost'
-PORT = 8080
+PORT = 5000
 DEBUG = False
 
 TITLE = "在线聊天室Demo"
@@ -11,7 +11,7 @@ WELCOME = "欢迎来到在线聊天室Demo版本，您可以在此畅所欲言"
 SECRET = None
 
 # 保存数据的路径，Debug模式下无法保存数据
-SAVE_PATH = 'save.db'
+SAVE_PATH = 'saves/save.db'
 
 # 聊天记录最少保留时间(s)，最大保留时间为该值的两倍
 EXPIRE_RATE = 600
