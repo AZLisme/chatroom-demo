@@ -228,7 +228,7 @@
         var uid = data['username'];
         var msg = data['msg'];
         var nick = data['nick'];
-        appendMessage(uid, nick, msg);
+        appendMessage(uid, nick, escapeHtml(msg));
     }
 
     function escapeHtml(text) {
