@@ -6,6 +6,6 @@ ADD templates templates
 ADD main.py main.py
 ADD requirements.txt requirements.txt
 ADD config.py config.py
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt && mkdir saves uploads
 EXPOSE 5000
 ENTRYPOINT ["python", "main.py"]

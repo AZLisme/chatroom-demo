@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-HOST = '192.168.1.113'
+HOST = '0.0.0.0'
 PORT = 5000
 DEBUG = True
 UPLOAD_FOLDER = 'uploads'
