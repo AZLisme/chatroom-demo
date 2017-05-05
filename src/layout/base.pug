@@ -1,0 +1,22 @@
+doctype html
+html
+    head
+        meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")/
+        link(rel='stylesheet', href='/static/css/material.min.css')/
+        link(rel='stylesheet', href='/static/css/font.css')/
+        script(type='text/javascript', src='/static/js/material.min.js')
+        script(type='text/javascript', src='/static/js/jquery.min.js')
+        block head
+            title 在线聊天室Demo
+    body
+        div.mdl-layout.mdl-js-layout.mdl-layout--fixed-header
+            header.mdl-layout__header
+                div.mdl-layout__header-row
+                    span.mdl-layout-title {{ config.TITLE }}
+                    block header
+            main.mdl-layout__content
+                div.page-content
+                    div#container
+                        block container
+            block footer
+        block post-scripts

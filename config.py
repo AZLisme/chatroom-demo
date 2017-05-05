@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
 
-HOST = 'localhost'
+HOST = '192.168.1.113'
 PORT = 5000
-DEBUG = False
+DEBUG = True
+UPLOAD_FOLDER = 'uploads'
 
 TITLE = "在线聊天室Demo"
 WELCOME = "欢迎来到在线聊天室Demo版本，您可以在此畅所欲言"

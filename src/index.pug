@@ -1,0 +1,44 @@
+extends layout/base
+
+block head
+    link(rel='stylesheet', href='/static/css/chatroom.min.css')
+    script(type='text/javascript', src='/static/js/socket.io.min.js')
+
+block header
+    button#show-member-list-button.mdl-button.mdl-js-button.mdl-button--icon
+        i.material-icons more_vert
+    ul#member-list.mdl-menu.mdl-js-menu(for='show-member-list-button')
+    div.mdl-layout-spacer
+    nav.mdl-navigation
+        span#username
+        a.mdl-navigation__link(href="/logout") 注销
+
+block container
+
+    div#chat-board
+        ul.mdl-list
+            li.from-other.clearfix
+                div.message
+                    div.username
+                        b 系统消息
+                    div.content {{ config.WELCOME }}
+    div#control-panel
+        div.send-box
+            form(action='#')
+                div.mdl-textfield.mdl-js-textfield
+                    textarea.mdl-textfield__input#chat-input(type='text', row='3')
+                    label.mdl-textfield__label(for='chat-input') 键入内容...
+        div.rich-content-panel
+            button#insert_emotion_button.mdl-button.mdl-js-button.mdl-button--icon
+                i.material-icons insert_emoticon
+            button#insert_photo_button.mdl-button.mdl-js-button.mdl-button--icon
+                i.material-icons insert_photo
+            form.hidden
+                input#filechooser(type='file')/
+        div.send-button
+            button#send-button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--accent 发送
+
+    include components/toast
+
+block post-scripts
+    script(type="text/javascript", src="/static/js/chatroom.min.js")

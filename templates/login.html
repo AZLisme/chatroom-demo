@@ -1,97 +1,15 @@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>登录</title>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="/static/style/material.min.css">
-    <script type="text/javascript" src="/static/js/material.min.js"></script>
-    <style>
-
-
-        div.page-content h2 {
-            text-align: center;
-        }
-
-        form.login-form {
-            margin: auto;
-            margin-top: 60px;
-            max-width: 400px;
-        }
-
-        form.login-form div {
-            width: 100%;
-        }
-
-        form.login-form button {
-            display: block;
-            width: 100%;
-            margin-top: 32px;
-        }
-
-        @media screen and (max-width: 450px) {
-            .mdl-layout__header-row {
-                padding-left: 16px;
-            }
-
-            form.login-form {
-                margin-left: 16px;
-                margin-right: 16px;
-            }
-        }
-    </style>
-</head>
-<body>
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-            <!-- Title -->
-            <span class="mdl-layout-title">{{ config.TITLE }}</span>
-            <!-- Add spacer, to align navigation to the right -->
-            <div class="mdl-layout-spacer"></div>
-            <!-- Navigation. We hide it in small screens. -->
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/login">登录</a>
-                <a class="mdl-navigation__link" href="/register">注册</a>
-            </nav>
-        </div>
-    </header>
-    <main class="mdl-layout__content">
-        <div class="page-content">
-            <h2>登录</h2>
-            <form action="/login" class="login-form" method="post">
-                <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="text" id="username" name="username">
-                    <label class="mdl-textfield__label" for="sample1">用户名...</label>
-                </div>
-                <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input" type="password" id="password" name="password">
-                    <label class="mdl-textfield__label" for="sample1">密码...</label>
-                </div>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                    登录
-                </button>
-            </form>
-        </div>
-    </main>
-    <div id="toast" class="mdl-js-snackbar mdl-snackbar">
-        <div class="mdl-snackbar__text"></div>
-        <button class="mdl-snackbar__action" type="button"></button>
-    </div>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <script>
-                $(document).ready(function () {
-                    setTimeout(function () {
-                        var snackbarContainer = document.querySelector('#toast');
-                        {% for message in messages %}
-                            var data = {message: '{{ message }}'};
-                            snackbarContainer.MaterialSnackbar.showSnackbar(data);
-                        {% endfor %}
-                    }, 500);
-                });
-            </script>
-        {% endif %}
-    {% endwith %}
-</div>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="stylesheet" href="/static/css/material.min.css"/><link rel="stylesheet" href="/static/css/font.css"/><script type="text/javascript" src="/static/js/material.min.js"></script><script type="text/javascript" src="/static/js/jquery.min.js"></script><link rel="stylesheet" href="/static/css/base.min.css"></head><body><div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"><header class="mdl-layout__header"><div class="mdl-layout__header-row"><span class="mdl-layout-title">{{ config.TITLE }}</span><div class="mdl-layout-spacer"></div><nav class="mdl-navigation"><a class="mdl-navigation__link" href="/login">登录</a><a class="mdl-navigation__link" href="/register">注册</a></nav></div></header><main class="mdl-layout__content"><div class="page-content"><div id="container"><h2>登录</h2><form class="chatroom-form" action="/login" method="post"><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="username" type="text" name="username"><label class="mdl-textfield__label" for="username">用户名...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="password" type="password" name="password"><label class="mdl-textfield__label" for="password">密码...</label></div><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">登录</button></form><!-- Toast components--><div class="mdl-js-snackbar mdl-snackbar" id="toast"><div class="mdl-snackbar__text"></div><button class="mdl-snackbar__action" type="button"></button></div>{% with messages = get_flashed_messages() %}
+  {% if messages %}
+      <script>
+          $(document).ready(function () {
+              setTimeout(function () {
+                  var snackbarContainer = document.querySelector('#toast');
+              {% for message in messages %}
+                  var data = {message: '{{ message }}'};
+                  snackbarContainer.MaterialSnackbar.showSnackbar(data);
+              {% endfor %}
+          }, 500);
+          });
+      </script>
+  {% endif %}
+{% endwith %}</div></div></main></div></body></html>

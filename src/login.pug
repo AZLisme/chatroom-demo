@@ -1,0 +1,22 @@
+extends layout/base
+
+block head
+    link(rel='stylesheet', href='/static/css/base.min.css')
+
+block header
+    div.mdl-layout-spacer
+    nav.mdl-navigation
+        a.mdl-navigation__link(href="/login") 登录
+        a.mdl-navigation__link(href="/register") 注册
+
+block container
+    h2 登录
+    form.chatroom-form(action='/login', method='post')
+        div.mdl-textfield.mdl-js-textfield
+            input.mdl-textfield__input#username(type='text', name='username')
+            label.mdl-textfield__label(for='username') 用户名...
+        div.mdl-textfield.mdl-js-textfield
+            input.mdl-textfield__input#password(type='password', name='password')
+            label.mdl-textfield__label(for='password') 密码...
+        button.mdl-button.mdl-js-button.mdl-button--raised.mdl-button--colored 登录
+    include components/toast
