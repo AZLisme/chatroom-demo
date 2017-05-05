@@ -15,7 +15,9 @@ gulp.task('default', function () {
 gulp.task('dist', function () {
     // Compile templates
     gulp.src('src/*.pug')
-        .pipe(pug())
+        .pipe(pug({
+            compress: true
+        }))
         .pipe(gulp.dest('./templates/'));
 
     // Compile CSS

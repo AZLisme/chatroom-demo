@@ -1,15 +1,17 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="stylesheet" href="/static/css/material.min.css"/><link rel="stylesheet" href="/static/css/font.css"/><script type="text/javascript" src="/static/js/material.min.js"></script><script type="text/javascript" src="/static/js/jquery.min.js"></script><link rel="stylesheet" href="/static/css/chatroom.min.css"><script type="text/javascript" src="/static/js/socket.io.min.js"></script></head><body><div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"><header class="mdl-layout__header"><div class="mdl-layout__header-row"><span class="mdl-layout-title">{{ config.TITLE }}</span><button class="mdl-button mdl-js-button mdl-button--icon" id="show-member-list-button"><i class="material-icons">more_vert</i></button><ul class="mdl-menu mdl-js-menu" id="member-list" for="show-member-list-button"></ul><div class="mdl-layout-spacer"></div><nav class="mdl-navigation"><span id="username"></span><a class="mdl-navigation__link" href="/logout">注销</a></nav></div></header><main class="mdl-layout__content"><div class="page-content"><div id="container"><div id="chat-board"><ul class="mdl-list"><li class="from-other clearfix"><div class="message"><div class="username"><b>系统消息</b></div><div class="content">{{ config.WELCOME }}</div></div></li></ul></div><div id="control-panel"><div class="send-box"><form action="#"><div class="mdl-textfield mdl-js-textfield"><textarea class="mdl-textfield__input" id="chat-input" type="text" row="3"></textarea><label class="mdl-textfield__label" for="chat-input">键入内容...</label></div></form></div><div class="rich-content-panel"><button class="mdl-button mdl-js-button mdl-button--icon" id="insert_emotion_button"><i class="material-icons">insert_emoticon</i></button><button class="mdl-button mdl-js-button mdl-button--icon" id="insert_photo_button"><i class="material-icons">insert_photo</i></button><form class="hidden"><input id="filechooser" type="file"/></form></div><div class="send-button"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="send-button">发送</button></div></div><!-- Toast components--><div class="mdl-js-snackbar mdl-snackbar" id="toast"><div class="mdl-snackbar__text"></div><button class="mdl-snackbar__action" type="button"></button></div>{% with messages = get_flashed_messages() %}
-  {% if messages %}
-      <script>
-          $(document).ready(function () {
-              setTimeout(function () {
-                  var snackbarContainer = document.querySelector('#toast');
-              {% for message in messages %}
-                  var data = {message: '{{ message }}'};
-                  snackbarContainer.MaterialSnackbar.showSnackbar(data);
-              {% endfor %}
-          }, 500);
-          });
-      </script>
-  {% endif %}
-{% endwith %}</div></div></main></div><script type="text/javascript" src="/static/js/chatroom.min.js"></script></body></html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="stylesheet" href="/static/css/material.min.css"/><link rel="stylesheet" href="/static/css/font.css"/><script type="text/javascript" src="/static/js/material.min.js"></script><script type="text/javascript" src="/static/js/jquery.min.js"></script><link rel="stylesheet" href="/static/css/chatroom.min.css"><script type="text/javascript" src="/static/js/socket.io.min.js"></script></head><body><div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"><header class="mdl-layout__header"><div class="mdl-layout__header-row"><span class="mdl-layout-title">{{ config.TITLE }}</span><title>{{ config.TITLE }}</title><button class="mdl-button mdl-js-button mdl-button--icon" id="show-member-list-button"><i class="material-icons">more_vert</i></button><ul class="mdl-menu mdl-js-menu" id="member-list" for="show-member-list-button"></ul><div class="mdl-layout-spacer"></div><nav class="mdl-navigation"><span id="username"></span><a class="mdl-navigation__link" href="/logout">注销</a></nav></div></header><main class="mdl-layout__content"><div id="container"><div id="chat-board"><ul class="mdl-list"><li class="from-other clearfix"><div class="message with_tail"><div class="username"><b>系统消息</b></div><div class="content"><div class="text-box">{{ config.WELCOME }}</div></div></div></li></ul></div><div id="control-panel"><div class="send-box"><form action="#"><div class="mdl-textfield mdl-js-textfield"><textarea class="mdl-textfield__input" id="chat-input" type="text" row="3"></textarea><label class="mdl-textfield__label" for="chat-input">键入内容...</label></div></form></div><div class="rich-content-panel"><button class="mdl-button mdl-js-button mdl-button--icon" id="insert_emotion_button"><i class="material-icons">insert_emoticon</i></button><button class="mdl-button mdl-js-button mdl-button--icon" id="insert_photo_button"><i class="material-icons">insert_photo</i></button><form class="hidden"><input id="filechooser" type="file"/></form></div><div class="send-button"><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="send-button">发送</button></div></div></div></main></div><!-- Toast components--><div class="hidden" id="toast-content">{% with messages = get_flashed_messages() %}{% if messages %}{{ messages }}{% endif %}{% endwith %}</div><div class="mdl-js-snackbar mdl-snackbar" id="toast"><div class="mdl-snackbar__text"></div><button class="mdl-snackbar__action" type="button"></button></div><script type="text/javascript">function showToastBar(msg) {
+    var snackbarContainer = document.querySelector('#toast');
+    var data = {message: msg};
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+}
+
+$(document).ready(function () {
+    setTimeout(function () {
+        var snackContent = eval(document.querySelector('#toast-content').innerText);
+        if (snackContent === undefined) {
+            return;
+        }
+        for (let i = 0; i < snackContent.length; i++) {
+            showToastBar(snackContent[i]);
+        }
+    })
+})</script><script type="text/javascript" src="/static/js/chatroom.min.js"></script></body></html>

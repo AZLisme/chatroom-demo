@@ -1,15 +1,17 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="stylesheet" href="/static/css/material.min.css"/><link rel="stylesheet" href="/static/css/font.css"/><script type="text/javascript" src="/static/js/material.min.js"></script><script type="text/javascript" src="/static/js/jquery.min.js"></script><link rel="stylesheet" href="/static/css/base.min.css"></head><body><div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"><header class="mdl-layout__header"><div class="mdl-layout__header-row"><span class="mdl-layout-title">{{ config.TITLE }}</span><div class="mdl-layout-spacer"></div><nav class="mdl-navigation"><a class="mdl-navigation__link" href="/login">登录</a><a class="mdl-navigation__link" href="/register">注册</a></nav></div></header><main class="mdl-layout__content"><div class="page-content"><div id="container"><h2>注册</h2><form class="chatroom-form" action="/register" method="post"><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="username" type="text" name="username"><label class="mdl-textfield__label" for="username">用户名...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="password" type="password" name="password"><label class="mdl-textfield__label" for="password">密码...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="password2" type="password" name="password2"><label class="mdl-textfield__label" for="password2">确认密码...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="nickname" type="text" name="nickname"><label class="mdl-textfield__label" for="nickname">昵称...</label></div><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">注册</button></form><!-- Toast components--><div class="mdl-js-snackbar mdl-snackbar" id="toast"><div class="mdl-snackbar__text"></div><button class="mdl-snackbar__action" type="button"></button></div>{% with messages = get_flashed_messages() %}
-  {% if messages %}
-      <script>
-          $(document).ready(function () {
-              setTimeout(function () {
-                  var snackbarContainer = document.querySelector('#toast');
-              {% for message in messages %}
-                  var data = {message: '{{ message }}'};
-                  snackbarContainer.MaterialSnackbar.showSnackbar(data);
-              {% endfor %}
-          }, 500);
-          });
-      </script>
-  {% endif %}
-{% endwith %}</div></div></main></div></body></html>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/><link rel="stylesheet" href="/static/css/material.min.css"/><link rel="stylesheet" href="/static/css/font.css"/><script type="text/javascript" src="/static/js/material.min.js"></script><script type="text/javascript" src="/static/js/jquery.min.js"></script><link rel="stylesheet" href="/static/css/base.min.css"></head><body><div class="mdl-layout mdl-js-layout mdl-layout--fixed-header"><header class="mdl-layout__header"><div class="mdl-layout__header-row"><span class="mdl-layout-title">{{ config.TITLE }}</span><title>{{ config.TITLE }} - 注册</title><div class="mdl-layout-spacer"></div><nav class="mdl-navigation"><a class="mdl-navigation__link" href="/login">登录</a><a class="mdl-navigation__link" href="/register">注册</a></nav></div></header><main class="mdl-layout__content"><div id="container"><h2>注册</h2><form class="chatroom-form" action="/register" method="post"><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="username" type="text" name="username"><label class="mdl-textfield__label" for="username">用户名...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="password" type="password" name="password"><label class="mdl-textfield__label" for="password">密码...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="password2" type="password" name="password2"><label class="mdl-textfield__label" for="password2">确认密码...</label></div><div class="mdl-textfield mdl-js-textfield"><input class="mdl-textfield__input" id="nickname" type="text" name="nickname"><label class="mdl-textfield__label" for="nickname">昵称...</label></div><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">注册</button></form><!-- Toast components--><div class="hidden" id="toast-content">{% with messages = get_flashed_messages() %}{% if messages %}{{ messages }}{% endif %}{% endwith %}</div><div class="mdl-js-snackbar mdl-snackbar" id="toast"><div class="mdl-snackbar__text"></div><button class="mdl-snackbar__action" type="button"></button></div><script type="text/javascript">function showToastBar(msg) {
+    var snackbarContainer = document.querySelector('#toast');
+    var data = {message: msg};
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+}
+
+$(document).ready(function () {
+    setTimeout(function () {
+        var snackContent = eval(document.querySelector('#toast-content').innerText);
+        if (snackContent === undefined) {
+            return;
+        }
+        for (let i = 0; i < snackContent.length; i++) {
+            showToastBar(snackContent[i]);
+        }
+    })
+})</script></div></main></div></body></html>

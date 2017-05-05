@@ -43,7 +43,7 @@ function sendImage() {
 function appendMessage(_uid, _nick, msg) {
     let list = $('ul.mdl-list')[0];
     let node = document.createElement('li');
-    node.innerHTML = `<div class="message"><div class="username"><b>${_nick}</b></div><div class="content">${msg}</div></div>`;
+    node.innerHTML = `<div class="message with_tail"><div class="username"><b>${_nick}</b></div><div class="content"><div class="text-box">${msg}</div></div></div>`;
     if (_uid === uid) {
         node.className = 'from-self clearfix';
     } else {

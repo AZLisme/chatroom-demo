@@ -1,20 +1,25 @@
 // Toast components
+div#toast-content.hidden {% with messages = get_flashed_messages() %}{% if messages %}{{ messages }}{% endif %}{% endwith %}
 div#toast.mdl-js-snackbar.mdl-snackbar
     div.mdl-snackbar__text
     button.mdl-snackbar__action(type='button')
+script(type='text/javascript').
 
-| {% with messages = get_flashed_messages() %}
-|   {% if messages %}
-|       <script>
-|           $(document).ready(function () {
-|               setTimeout(function () {
-|                   var snackbarContainer = document.querySelector('#toast');
-|               {% for message in messages %}
-|                   var data = {message: '{{ message }}'};
-|                   snackbarContainer.MaterialSnackbar.showSnackbar(data);
-|               {% endfor %}
-|           }, 500);
-|           });
-|       </script>
-|   {% endif %}
-| {% endwith %}
+    function showToastBar(msg) {
+        var snackbarContainer = document.querySelector('#toast');
+        var data = {message: msg};
+        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+    }
+
+    $(document).ready(function () {
+        setTimeout(function () {
+            var snackContent = eval(document.querySelector('#toast-content').innerText);
+            if (snackContent === undefined) {
+                return;
+            }
+            for (let i = 0; i < snackContent.length; i++) {
+                showToastBar(snackContent[i]);
+            }
+        })
+    })
+

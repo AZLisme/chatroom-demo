@@ -5,6 +5,7 @@ block head
     script(type='text/javascript', src='/static/js/socket.io.min.js')
 
 block header
+    title {{ config.TITLE }}
     button#show-member-list-button.mdl-button.mdl-js-button.mdl-button--icon
         i.material-icons more_vert
     ul#member-list.mdl-menu.mdl-js-menu(for='show-member-list-button')
@@ -18,10 +19,11 @@ block container
     div#chat-board
         ul.mdl-list
             li.from-other.clearfix
-                div.message
+                div.message.with_tail
                     div.username
                         b 系统消息
-                    div.content {{ config.WELCOME }}
+                    div.content
+                        div.text-box {{ config.WELCOME }}
     div#control-panel
         div.send-box
             form(action='#')
@@ -38,7 +40,6 @@ block container
         div.send-button
             button#send-button.mdl-button.mdl-js-button.mdl-button--raised.mdl-js-ripple-effect.mdl-button--accent 发送
 
-    include components/toast
-
 block post-scripts
+    include components/toast
     script(type="text/javascript", src="/static/js/chatroom.min.js")
