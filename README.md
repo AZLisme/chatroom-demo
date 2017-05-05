@@ -3,7 +3,7 @@
 基于[SocketIO](https://socket.io/)与[Flask-SocketIO](https://flask-socketio.readthedocs.io/en/latest/)搭建，实验性质的聊天软件。
 ~~用来狙击¥1800每月的黑心某易云信~~
 
-![Demo地址](http://chat.azlis.me)
+[Demo地址](http://chat.azlis.me)
 
 ## 目前已经测试验证完毕的项目
 
