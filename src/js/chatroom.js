@@ -136,6 +136,7 @@ function escapeHtml(text) {
 let uid = undefined;
 let nick = undefined;
 let socket = io.connect('http://' + document.domain + ':' + location.port);
+let new_msg = false;
 
 socket.on('init', function (data) {
     uid = data['uid'];
@@ -159,6 +160,12 @@ socket.on('chat', function (data) {
     main.animate(
         {scrollTop: main[0].scrollHeight - main[0].clientHeight}
     );
+
+    if (document.visibilityState === 'hidden' && new_msg === false) {
+        new_msg = true;
+        showFlashTitle(document.title);
+    }
+
 });
 
 socket.on('join_notify', function (data) {
@@ -197,3 +204,25 @@ $("textarea.mdl-textfield__input").keyup(function (event) {
         sendMessage();
     }
 });
+
+function showFlashTitle(title, index=0) {
+    var prefix = ['【新消息】', '【　　　】']
+    document.title = prefix[index] + title;
+    if(index === 0) {
+        index = 1;
+    } else {
+        index = 0;
+    }
+    if(new_msg){
+        setTimeout(function () {
+            showFlashTitle(title, index);
+        }, 500);
+    } else {
+        document.title = title;
+    }
+}
+document.addEventListener("webkitvisibilitychange", function () {
+    if (document.visibilityState === 'visible') {
+        new_msg = false;
+    };
+}, false);
