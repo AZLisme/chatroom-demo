@@ -40,28 +40,45 @@ function sendImage() {
     });
 }
 
+function fadeInNode(node) {
+    node.style.marginTop = "64px";
+    $(node).animate({
+        opacity: '1',
+        marginTop: "0"
+    }, 'fast', "swing");
+}
+
 function appendMessage(_uid, _nick, msg) {
     let list = $('ul.mdl-list')[0];
     let node = document.createElement('li');
     node.innerHTML = `<div class="message with_tail"><div class="username"><b>${_nick}</b></div><div class="content"><div class="text-box">${msg}</div></div></div>`;
+    node.style.opacity = "0";
     if (_uid === uid) {
         node.className = 'from-self clearfix';
     } else {
         node.className = 'from-other clearfix';
     }
     list.appendChild(node);
+    fadeInNode(node);
+}
+
+function clearMessage() {
+    let list = $('ul.mdl-list')[0];
+    list.innerHTML = '';
 }
 
 function appendImage(_uid, _nick, url) {
     let list = $('ul.mdl-list')[0];
     let node = document.createElement('li');
     node.innerHTML = `<div class="message"><div class="username"><b>${_nick}</b></div><div class="content"><img src="${url}"></div></div>`;
+    node.opacity = 0;
     if (_uid === uid) {
         node.className = 'from-self clearfix';
     } else {
         node.className = 'from-other clearfix';
     }
     list.appendChild(node);
+    fadeInNode(node);
 }
 
 function appendMemberList(_uid, _nick) {
