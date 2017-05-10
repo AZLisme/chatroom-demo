@@ -11,12 +11,8 @@
 + 基于Flask-Login的用户认证机制；
 + 自定义消息类型；
 + 储存并恢复聊天记录；
-
-## 还需要进一步验证的项目
-
 + 生产环境中长时间多人聊天的稳定性
 + 部署在Docker内、由Nginx反向代理的可行性
-+ 对于各种手机端的支持
 
 ## 运行Demo
 
@@ -40,6 +36,13 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+## 打包为Docker镜像
+
+```bash
+docker build -t chatroom .
+```
+
 ## FAQ
 
 ### 是否需要安装数据库的支持？
